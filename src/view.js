@@ -9,59 +9,54 @@ export default () => {
   const label = document.querySelector('.form-label');
   const button = document.querySelector('button');
 
-  // Тексты формы через i18next
+  // тексты
   label.textContent = i18n.t('form.label');
   button.textContent = i18n.t('form.submit');
 
-  const renderFeeds = (feeds) => {
-    const container = document.querySelector('.feeds');
-    container.innerHTML = '<h2>Фиды</h2>';
-
-    feeds.forEach(({ title, description }) => {
-      const div = document.createElement('div');
-      div.innerHTML = `
-        <h3>${title}</h3>
-        <p>${description}</p>
-      `;
-      container.append(div);
-    });
-  };
-
-  const renderPosts = (posts) => {
-    const container = document.querySelector('.posts');
-    container.innerHTML = '<h2>Посты</h2>';
-
-    const ul = document.createElement('ul');
-
-    posts.forEach(({ title, link }) => {
-      const li = document.createElement('li');
-      li.innerHTML = `<a href="${link}" target="_blank">${title}</a>`;
-      ul.append(li);
-    });
-
-    container.append(ul);
-  };
-
-  // Подписка на изменения состояния
   subscribe(state, () => {
-    const { status, error, feeds, posts } = state;
+    const { status, error } = state.form;
 
-    // Валидация формы
     input.classList.remove('is-invalid');
 
-    if (status.form === 'error') {
+    if (status === 'error') {
       input.classList.add('is-invalid');
       feedback.textContent = i18n.t(error);
     }
 
-    if (status.form === 'valid') {
+    if (status === 'valid') {
       form.reset();
       input.focus();
       feedback.textContent = '';
     }
-
-    // Рендер фидов и постов
-    renderFeeds(feeds);
-    renderPosts(posts);
   });
+};
+
+// Named exports для main.js
+export const renderFeeds = (feeds) => {
+  const container = document.querySelector('.feeds');
+  container.innerHTML = '<h2>Фиды</h2>';
+
+  feeds.forEach(({ title, description }) => {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <h3>${title}</h3>
+      <p>${description}</p>
+    `;
+    container.append(div);
+  });
+};
+
+export const renderPosts = (posts) => {
+  const container = document.querySelector('.posts');
+  container.innerHTML = '<h2>Посты</h2>';
+
+  const ul = document.createElement('ul');
+
+  posts.forEach(({ title, link }) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="${link}" target="_blank">${title}</a>`;
+    ul.append(li);
+  });
+
+  container.append(ul);
 };
