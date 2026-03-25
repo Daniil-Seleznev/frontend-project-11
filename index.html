@@ -10,17 +10,19 @@
     <h1 class="mb-4">RSS агрегатор</h1>
 
     <form class="rss-form">
-      <div class="mb-3">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Ссылка RSS"
-          required
-        />
-      </div>
-      <button type="submit" class="btn btn-primary">
+      <label class="form-label">Ссылка RSS</label>
+    
+      <input
+        type="text"
+        class="form-control"
+        required
+      />
+    
+      <button type="submit" class="btn btn-primary mt-2">
         Добавить
       </button>
+    
+      <div class="feedback text-danger mt-2"></div>
     </form>
   </div>
 

@@ -3,6 +3,9 @@ import javascriptLogo from './assets/javascript.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import { setupCounter } from './counter.js'
+import state from './state.js'
+import validate from './validation.js'
+import initView from './view.js'
 
 document.querySelector('#app').innerHTML = `
 <section id="center">
@@ -57,7 +60,7 @@ document.querySelector('#app').innerHTML = `
 <section id="spacer"></section>
 `
 
-setupCounter(document.querySelector('#counter'))
+initView();
 
 const form = document.querySelector('.rss-form');
 
@@ -67,21 +70,19 @@ form.addEventListener('submit', (e) => {
   const input = form.querySelector('input');
   const url = input.value;
 
-  fakeRequest(url)
-    .then((result) => {
-      console.log('Успех:', result);
+  const existingUrls = state.feeds.map((feed) => feed.url);
+
+  state.form.status = 'sending';
+
+  validate(url, existingUrls)
+    .then(() => {
+      state.feeds.push({ url });
+
+      state.form.status = 'valid';
+      state.form.error = null;
     })
-    .catch((error) => {
-      console.error('Ошибка:', error);
+    .catch((err) => {
+      state.form.status = 'error';
+      state.form.error = err.message;
     });
 });
-
-const fakeRequest = (url) => {
-  return new Promise((resolve, reject) => {
-    if (url) {
-      resolve(`Добавлен RSS: ${url}`);
-    } else {
-      reject(new Error('Пустая ссылка'));
-    }
-  });
-};
