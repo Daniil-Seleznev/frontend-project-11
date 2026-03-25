@@ -1,4 +1,4 @@
-import { subscribe } from 'valtio';
+import { subscribe } from 'valtio/vanilla';
 import state from './state.js';
 
 export default () => {
