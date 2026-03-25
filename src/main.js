@@ -2,6 +2,11 @@ import './style.css';
 import state from './state.js';
 import validate from './validation.js';
 import initView from './view.js';
+import i18n from './i18n.js';
+
+i18n.then(() => {
+  initApp();
+});
 
 initView();
 
